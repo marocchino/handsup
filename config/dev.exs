@@ -38,5 +38,5 @@ config :handsup, Handsup.Repo,
   username: "postgres",
   password: "postgres",
   database: "handsup_dev",
-  hostname: "localhost",
+  hostname: "db",
   pool_size: 10

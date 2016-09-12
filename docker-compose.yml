@@ -1,0 +1,22 @@
+version: '2'
+services:
+  db:
+    image: "postgres:9"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ~/.docker-volumes/handsup/db/:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_PASSWORD: ""
+      POSTGRES_USER: "postgres"
+  web:
+    build: .
+    command: "mix phoenix.server"
+    volumes:
+      - .:/handsup
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    environment:
+      MIX_ENV: "dev"
