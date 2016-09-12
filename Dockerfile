@@ -17,5 +17,6 @@ RUN apt-get install -y elixir erlang-dev erlang-parsetools && rm erlang-solution
 RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phoenix_new-$PHOENIX_VERSION.ez
 
 RUN mix local.hex --force
+RUN mix local.rebar --force
 
 WORKDIR /handsup
