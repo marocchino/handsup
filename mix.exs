@@ -37,7 +37,7 @@ defmodule Handsup.Mixfile do
      {:phoenix_html, "~> 2.6"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
-     {:ueberauth_google, "~> 0.3"},
+     {:ueberauth_google, github: "ueberauth/ueberauth_google"},
      {:credo, "~> 0.4", only: [:dev, :test]},
      {:cowboy, "~> 1.0"}]
   end
