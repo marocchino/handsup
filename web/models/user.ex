@@ -1,4 +1,8 @@
 defmodule Handsup.User do
+  @moduledoc """
+    OAuth user
+  """
+
   use Handsup.Web, :model
 
   schema "users" do
