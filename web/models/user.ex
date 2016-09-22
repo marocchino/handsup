@@ -30,19 +30,13 @@ defmodule Handsup.User do
   Find or Create user with passed oauth information.
   """
   def find_or_create(auth) do
-    %{uid: uid, provider: provider} = auth
-    provider_str = to_string(provider)
-
-    query = from user in User,
-      where: user.uid == ^uid and user.provider == ^provider_str
-    user = Repo.one(query)
-
-    if user do
-      {:ok, user}
-    else
-      user_attrs = %{uid: uid, provider: provider_str}
-      changeset = User.changeset(%User{}, user_attrs)
-      Repo.insert(changeset)
-    end
+    changes =
+      %{uid: auth.uid, provider: auth.provider}
+      |> Map.update(:provider, "google", &to_string/1)
+    query = where(User, uid: ^changes.uid, provider: ^changes.provider)
+    user = Repo.one(query) || %User{}
+    user
+    |> changeset(changes)
+    |> Repo.insert_or_update
   end
 end
