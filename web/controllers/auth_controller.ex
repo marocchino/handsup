@@ -2,7 +2,7 @@ defmodule Handsup.AuthController do
   @moduledoc """
   Auth controller responsible for handling Ueberauth responses
   """
-
+  alias Handsup.User
   use Handsup.Web, :controller
   plug Ueberauth
 

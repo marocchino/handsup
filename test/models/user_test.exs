@@ -35,13 +35,13 @@ defmodule Handsup.UserTest do
     {status, actual} = User.find_or_create(auth)
 
     assert status == :ok
-    assert auth.uid == actual.uid
-    assert to_string(auth.provider) == actual.provider
+    assert actual.uid == "uid"
+    assert actual.provider == "google"
   end
 
   test "find_or_create return {:error, _reason}" do
     auth = %{uid: "", provider: :google}
-    {status, _reason} = User.find_or_create(auth)
+    {status, _} = User.find_or_create(auth)
 
     assert status == :error
   end
