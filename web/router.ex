@@ -7,6 +7,7 @@ defmodule Handsup.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug Handsup.Session, repo: Handsup.Repo
   end
 
   pipeline :api do
@@ -17,6 +18,7 @@ defmodule Handsup.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    resources "/groups", GroupController, only: [:index, :new, :create]
   end
 
   scope "/auth", Handsup do
