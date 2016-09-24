@@ -6,7 +6,6 @@ defmodule Handsup.User do
   use Handsup.Web, :model
 
   alias Handsup.Repo
-  alias Handsup.User
 
   schema "users" do
     field :uid, :string
@@ -33,8 +32,8 @@ defmodule Handsup.User do
     changes =
       %{uid: auth.uid, provider: auth.provider}
       |> Map.update(:provider, "google", &to_string/1)
-    query = where(User, uid: ^changes.uid, provider: ^changes.provider)
-    user = Repo.one(query) || %User{}
+    query = where(__MODULE__, uid: ^changes.uid, provider: ^changes.provider)
+    user = Repo.one(query) || %__MODULE__{}
     user
     |> changeset(changes)
     |> Repo.insert_or_update
