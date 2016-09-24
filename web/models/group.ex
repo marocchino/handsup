@@ -1,10 +1,16 @@
 defmodule Handsup.Group do
+  @moduledoc """
+  Group
+  """
   use Handsup.Web, :model
+
+  alias Handsup.User
 
   schema "groups" do
     field :name_eng, :string
     field :name, :string
-    belongs_to :organizer, Handsup.Organizer
+    belongs_to :organizer, User
+    many_to_many :users, User, join_through: "groups_users"
 
     timestamps()
   end

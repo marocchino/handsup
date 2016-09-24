@@ -1,0 +1,9 @@
+<h1>Listing groups</h1>
+
+<table>
+  <%= for group <- @groups do %>
+    <tr>
+      <td><%= group.name %>
+    </tr>
+  <% end %>
+</table>

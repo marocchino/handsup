@@ -6,11 +6,13 @@ defmodule Handsup.User do
   use Handsup.Web, :model
 
   alias Handsup.Repo
+  alias Handsup.Group
 
   schema "users" do
     field :uid, :string
     field :provider, :string
     field :nickname, :string
+    has_many :own_groups, Group, foreign_key: :organizer_id
 
     timestamps()
   end

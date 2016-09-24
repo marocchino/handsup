@@ -26,6 +26,7 @@ defmodule Handsup.ConnCase do
       import Ecto.Query
 
       import Handsup.Router.Helpers
+      import Handsup.TestHelpers
 
       # The default endpoint for testing
       @endpoint Handsup.Endpoint
