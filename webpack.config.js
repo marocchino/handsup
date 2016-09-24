@@ -1,7 +1,8 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
 module.exports = {
-  entry: ["./web/static/css/app.css", "./web/static/js/app.js"],
+  entry: ["./web/static/css/app.css",
+          "./web/static/js/app.js"],
   output: {
     path: "./priv/static",
     filename: "js/app.js"
@@ -13,7 +14,7 @@ module.exports = {
       include: __dirname,
       loader: ["babel"],
       query: {
-        presets: ["es2015"]
+        presets: ["es2015", "react"]
       }
     }, {
       test: /\.css$/,
