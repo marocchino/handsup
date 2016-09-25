@@ -10,7 +10,18 @@ defmodule Handsup.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
-     deps: deps()]
+     deps: deps(),
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: preferred_cli_env()]
+  end
+
+  def preferred_cli_env do
+    ["t": :test,
+     "test.setup": :test,
+     "coveralls": :test,
+     "coveralls.detail": :test,
+     "coveralls.post": :test,
+     "coveralls.html": :test]
   end
 
   # Configuration for the OTP application.
@@ -38,6 +49,7 @@ defmodule Handsup.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:ueberauth_google, github: "ueberauth/ueberauth_google"},
+     {:excoveralls, "~> 0.5.6", only: :test},
      {:credo, "~> 0.4", only: [:dev, :test]},
      {:cowboy, "~> 1.0"}]
   end
@@ -51,6 +63,8 @@ defmodule Handsup.Mixfile do
   defp aliases do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
      "ecto.reset": ["ecto.drop", "ecto.setup"],
-     "test": ["credo --strict", "ecto.create --quiet", "ecto.migrate", "test"]]
+     "test.setup": "ecto.create",
+     "test": ["credo --strict", "ecto.migrate", "test"],
+     "t": "test"]
   end
 end
