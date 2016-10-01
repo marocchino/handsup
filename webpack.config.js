@@ -14,12 +14,17 @@ module.exports = {
       include: __dirname,
       loader: ["babel"],
       query: {
-        presets: ["es2015", "react"]
+        presets: ["es2015"]
       }
     }, {
       test: /\.css$/,
       loader: ExtractTextPlugin.extract("style", "css")
-    }]
+    }, {
+      test: /\.(woff2?|svg)$/,
+      loader: 'url?limit=10000'
+    }, {
+      test: /\.(ttf|eot)$/,
+      loader: 'file' }]
   },
   plugins: [
     new ExtractTextPlugin("css/app.css"),
