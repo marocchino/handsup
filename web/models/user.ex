@@ -20,6 +20,7 @@ defmodule Handsup.User do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
+  @spec changeset(map, map) :: map
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:uid, :provider, :nickname])
@@ -28,8 +29,24 @@ defmodule Handsup.User do
   end
 
   @doc """
+  Return true if event is from a group owned by user
+  """
+  @spec owned?(map, map) :: boolean
+  def owned?(user, event) do
+    with(
+      {:ok, group_id} <- Map.fetch(event, :group_id),
+      true <- Repo.get(assoc(user, :own_groups), group_id) && true
+    ) do
+      true
+    else
+      _ -> false
+    end
+  end
+
+  @doc """
   Find or Create user with passed oauth information.
   """
+  @spec find_or_create(map) :: map
   def find_or_create(auth) do
     changes =
       %{uid: auth.uid, provider: auth.provider}

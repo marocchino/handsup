@@ -14,7 +14,6 @@ defmodule Handsup.GroupController do
 
   def show(conn, %{"id" => id}) do
     group = Repo.get!(Group, id)
-    changeset = Group.changeset(group)
     render conn, "show.html", group: group
   end
 
@@ -71,7 +70,7 @@ defmodule Handsup.GroupController do
     case group && Repo.delete(group) do
       {:ok, _group} ->
         redirect_to_index(conn, "Group destroyed successfully.")
-      {:error, changeset} ->
+      {:error, _changeset} ->
         redirect_to_index(conn, "Group isn't destroyed successfully.")
       _ ->
         redirect_to_index(conn, "You don't own this group.")

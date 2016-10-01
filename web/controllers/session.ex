@@ -6,6 +6,7 @@ defmodule Handsup.Session do
   import Plug.Conn
   import Phoenix.Controller
   alias Handsup.Router.Helpers
+  alias Handsup.User
   alias Phoenix.Token
 
   def init(opts) do
@@ -18,7 +19,7 @@ defmodule Handsup.Session do
     cond do
       user = conn.assigns[:current_user] ->
         put_current_user(conn, user)
-      user = user_id && repo.get(Handsup.User, user_id) ->
+      user = user_id && repo.get(User, user_id) ->
         put_current_user(conn, user)
       true ->
         assign(conn, :current_user, nil)
