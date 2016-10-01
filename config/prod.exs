@@ -18,6 +18,10 @@ config :handsup, Handsup.Endpoint,
   cache_static_manifest: "priv/static/manifest.json",
   secret_key_base: System.get_env("SECRET_KEY_BASE")
 
+config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+  client_id: System.get_env("GOOGLE_CLIENT_ID"),
+  client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
+
 # Configure your database
 config :handsup, Handsup.Repo,
   adapter: Ecto.Adapters.Postgres,
