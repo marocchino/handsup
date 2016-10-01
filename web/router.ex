@@ -19,6 +19,7 @@ defmodule Handsup.Router do
 
     get "/", PageController, :index
     resources "/groups", GroupController
+    resources "/events", EventController
   end
 
   scope "/auth", Handsup do
