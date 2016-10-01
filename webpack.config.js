@@ -17,6 +17,9 @@ module.exports = {
         presets: ["es2015"]
       }
     }, {
+      test:/bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/,
+      loader: 'imports?jQuery=jquery'
+    }, {
       test: /\.css$/,
       loader: ExtractTextPlugin.extract("style", "css")
     }, {
