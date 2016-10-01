@@ -8,6 +8,7 @@
     <meta name="author" content="">
 
     <title>Hello Handsup!</title>
+    <%= raw WebPack.header %>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 

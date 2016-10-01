@@ -6,7 +6,7 @@ defmodule Handsup.Mixfile do
      version: "0.0.1",
      elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
-     compilers: [:phoenix, :gettext] ++ Mix.compilers,
+     compilers: [:phoenix, :gettext, :reaxt_webpack] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
@@ -30,7 +30,8 @@ defmodule Handsup.Mixfile do
   def application do
     [mod: {Handsup, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
-                    :gettext, :phoenix_ecto, :postgrex, :ueberauth_google]]
+                    :gettext, :phoenix_ecto, :postgrex, :ueberauth_google,
+                    :reaxt]]
   end
 
   # Specifies which paths to compile per environment.
@@ -47,6 +48,7 @@ defmodule Handsup.Mixfile do
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.6"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
+     {:reaxt, github: "awetzel/reaxt"},
      {:gettext, "~> 0.11"},
      {:ueberauth_google, github: "ueberauth/ueberauth_google"},
      {:excoveralls, "~> 0.5.6", only: :test},

@@ -9,6 +9,8 @@ use Mix.Config
 config :handsup,
   ecto_repos: [Handsup.Repo]
 
+config :reaxt, :otp_app, :handsup
+
 # Configures the endpoint
 config :handsup, Handsup.Endpoint,
   url: [host: "localhost"],
