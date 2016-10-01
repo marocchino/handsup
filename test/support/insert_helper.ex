@@ -13,13 +13,13 @@ defmodule Handsup.InsertHelper do
     |> Repo.insert!
   end
   
-  def insert_group(attrs \\ []) do
+  def insert_group(user, attrs \\ []) do
     changes = Map.merge(%{
       name: "name",
       name_eng: "name_eng"
     }, Map.new(attrs))
 
-    %Handsup.Group{}
+    %Handsup.Group{organizer_id: user.id}
     |> Handsup.Group.changeset(changes)
     |> Repo.insert!
   end

@@ -3,7 +3,9 @@
 <table>
   <%= for group <- @groups do %>
     <tr>
-      <td><%= group.name %>
+      <td><%= group.name %></td>
+      <td><%= group.name_eng %></td>
+      <td><%= link("edit", to: group_path(@conn, :edit, group)) %></td>
     </tr>
   <% end %>
 </table>

@@ -1,5 +1,7 @@
 defmodule Handsup.GroupControllerTest do
   use Handsup.ConnCase
+  @valid_attr %{name_eng: "group_name", name: "Group Name"}
+  @invalid_attr %{name_eng: "", name: "Group Name"}
 
   setup %{conn: conn} = config do
     if name = config[:login_as] do
@@ -12,7 +14,8 @@ defmodule Handsup.GroupControllerTest do
   end
 
   test "lists all groups", %{conn: conn} do
-    group = insert_group(name_eng: "group", name: "group1")
+    user = insert_user
+    group = insert_group(user, name_eng: "group", name: "group1")
 
     conn = get conn, group_path(conn, :index)
 
@@ -27,13 +30,32 @@ defmodule Handsup.GroupControllerTest do
     assert html_response(conn, 200)
   end
 
-  @valid_attr %{name_eng: "group_name", name: "Group Name"}
-
   @tag login_as: "org"
   test "creates new group and redirects", %{conn: conn, user: user} do
     conn = post(conn, group_path(conn, :create), group: @valid_attr)
     assert redirected_to(conn) == group_path(conn, :index)
     assert Repo.get_by!(Handsup.Group, @valid_attr).organizer_id == user.id
+  end
+
+  @tag login_as: "org"
+  test "shows edit form", %{conn: conn, user: user} do
+    group = insert_group(user, name_eng: "group", name: "group1")
+    conn = get conn, group_path(conn, :edit, group.id)
+    assert html_response(conn, 200)
+  end
+
+  @tag login_as: "org"
+  test "updates group and redirects", %{conn: conn, user: user} do
+    group = insert_group(user, name_eng: "group", name: "group1")
+    conn = put(conn, group_path(conn, :update, group.id), group: @valid_attr)
+    assert redirected_to(conn) == group_path(conn, :index)
+  end
+
+  @tag login_as: "org"
+  test "fails to update group and renders", %{conn: conn, user: user} do
+    group = insert_group(user, name_eng: "group", name: "group1")
+    conn = put(conn, group_path(conn, :update, group.id), group: @invalid_attr)
+    assert html_response(conn, 200)
   end
 
   test "requires user authentication on 'new' action", %{conn: conn} do
@@ -44,6 +66,18 @@ defmodule Handsup.GroupControllerTest do
   
   test "requires user authentication on 'create' action", %{conn: conn} do
     conn = post(conn, group_path(conn, :create, %{}))
+    assert redirected_to(conn) == page_path(conn, :index)
+    assert conn.halted
+  end
+
+  test "requires user authentication on 'edit' action", %{conn: conn} do
+    conn = get(conn, group_path(conn, :edit, "42"))
+    assert redirected_to(conn) == page_path(conn, :index)
+    assert conn.halted
+  end
+
+  test "requires user authentication on 'update' action", %{conn: conn} do
+    conn = put(conn, group_path(conn, :update, "42"), %{})
     assert redirected_to(conn) == page_path(conn, :index)
     assert conn.halted
   end
