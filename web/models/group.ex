@@ -18,6 +18,7 @@ defmodule Handsup.Group do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
+  @spec changeset(map, map) :: map
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:name_eng, :name])

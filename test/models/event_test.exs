@@ -1,18 +1,27 @@
 defmodule Handsup.EventTest do
   use Handsup.ModelCase
 
+  alias Handsup.User
+  alias Handsup.Group
   alias Handsup.Event
 
-  @valid_attrs %{name: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
-    changeset = Event.changeset(%Event{}, @valid_attrs)
+    {:ok, user} = User.changeset(%User{}, %{uid: "uid", provider: "google"})
+                  |> Repo.insert
+    {:ok, group} = user
+                   |> build_assoc(:own_groups)
+                   |> Group.changeset(%{name: "aaaa", name_eng: "aaaa"})
+                   |> Repo.insert
+    attrs = %{ name: "some content", group_id: group.id}
+    changeset = Event.changeset(%Event{}, user, attrs)
     assert changeset.valid?
   end
 
   test "changeset with invalid attributes" do
-    changeset = Event.changeset(%Event{}, @invalid_attrs)
+    user = %User{}
+    changeset = Event.changeset(%Event{}, user, @invalid_attrs)
     refute changeset.valid?
   end
 end

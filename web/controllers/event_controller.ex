@@ -4,18 +4,21 @@ defmodule Handsup.EventController do
   alias Handsup.Event
   import Handsup.Session, only: [authenticate_user: 2]
 
+  plug :authenticate_user when action in [:new, :create, :edit, :update]
+
   def index(conn, _params) do
     events = Repo.all(Event)
     render(conn, "index.html", events: events)
   end
 
   def new(conn, _params) do
-    changeset = Event.changeset(%Event{})
+    changeset = Event.changeset(%Event{}, conn.assigns.current_user)
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"event" => event_params}) do
-    changeset = Event.changeset(%Event{}, event_params)
+    changeset =
+      Event.changeset(%Event{}, conn.assigns.current_user, event_params)
 
     case Repo.insert(changeset) do
       {:ok, _event} ->
@@ -34,7 +37,7 @@ defmodule Handsup.EventController do
 
   def edit(conn, %{"id" => id}) do
     event = Repo.get!(Event, id)
-    changeset = Event.changeset(event)
+    changeset = Event.changeset(event, conn.assigns.current_user)
     render(conn, "edit.html", event: event, changeset: changeset)
   end
 

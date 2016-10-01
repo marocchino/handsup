@@ -2,6 +2,7 @@ defmodule Handsup.UserTest do
   use Handsup.ModelCase
 
   alias Handsup.User
+  alias Handsup.Group
 
   @valid_attrs %{nickname: "some content",
                  provider: "some content",
@@ -16,6 +17,29 @@ defmodule Handsup.UserTest do
   test "changeset with invalid attributes" do
     changeset = User.changeset(%User{}, @invalid_attrs)
     refute changeset.valid?
+  end
+
+  test "owned? without group_id" do
+    user = %User{id: 1}
+    event = %{id: 1}
+    refute User.owned?(user, event)
+  end
+
+  test "owned? with group_id" do
+    user = %User{id: 1}
+    event = %{id: 1, group_id: 1}
+    refute User.owned?(user, event)
+  end
+
+  test "owned? with own group_id" do
+    {:ok, user} = User.changeset(%User{}, %{uid: "uid", provider: "google"})
+                  |> Repo.insert
+    {:ok, group} = user
+                   |> build_assoc(:own_groups)
+                   |> Group.changeset(%{name: "aaaa", name_eng: "aaaa"})
+                   |> Repo.insert
+    event = %{id: 1, group_id: group.id}
+    assert User.owned?(user, event)
   end
 
   test "find_or_create return {:ok, user} with exist user" do
