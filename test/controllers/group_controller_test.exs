@@ -1,5 +1,7 @@
 defmodule Handsup.GroupControllerTest do
   use Handsup.ConnCase
+
+  alias Handsup.Group
   @valid_attr %{name_eng: "group_name", name: "Group Name"}
   @invalid_attr %{name_eng: "", name: "Group Name"}
 
@@ -45,7 +47,7 @@ defmodule Handsup.GroupControllerTest do
   test "creates new group and redirects", %{conn: conn, user: user} do
     conn = post(conn, group_path(conn, :create), group: @valid_attr)
     assert redirected_to(conn) == group_path(conn, :index)
-    assert Repo.get_by!(Handsup.Group, @valid_attr).organizer_id == user.id
+    assert Repo.get_by!(Group, @valid_attr).organizer_id == user.id
   end
 
   @tag login_as: "org"
@@ -74,11 +76,11 @@ defmodule Handsup.GroupControllerTest do
     group = insert_group(user, name_eng: "group", name: "group1")
     conn = delete(conn, group_path(conn, :delete, group.id))
     assert redirected_to(conn) == group_path(conn, :index)
-    refute Repo.get(Handsup.Group, group.id)
+    refute Repo.get(Group, group.id)
   end
 
   @tag login_as: "org"
-  test "fails to destroy group and redirects", %{conn: conn, user: user} do
+  test "fails to destroy group and redirects", %{conn: conn} do
     conn = delete(conn, group_path(conn, :delete, "42"))
     assert redirected_to(conn) == group_path(conn, :index)
   end

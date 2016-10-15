@@ -12,15 +12,15 @@ defmodule Handsup.AuthControllerTest do
   end
 
   @tag :pending
-  test "successfully granted user and login", %{conn: conn} do
+  test "successfully granted user and login", %{conn: _conn} do
   end
 
   @tag :pending
-  test "successfully granted user but fail to login", %{conn: conn} do
+  test "successfully granted user but fail to login", %{conn: _conn} do
   end
 
   @tag login_as: "user", pending: true
-  test "fail to grant user", %{conn: conn, user: user} do
+  test "fail to grant user", %{conn: _conn, user: _user} do
   end
 end
 
