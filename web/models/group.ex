@@ -22,6 +22,7 @@ defmodule Handsup.Group do
     struct
     |> cast(params, [:name_eng, :name])
     |> validate_required([:name_eng, :name])
+    |> validate_format(:name_eng, ~r/^[\w_-]+$/i)
     |> unique_constraint(:name_eng)
   end
 end

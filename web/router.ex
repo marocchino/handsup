@@ -18,8 +18,7 @@ defmodule Handsup.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/groups", GroupController,
-              only: [:index, :show, :new, :create, :edit, :update]
+    resources "/groups", GroupController
   end
 
   scope "/auth", Handsup do
