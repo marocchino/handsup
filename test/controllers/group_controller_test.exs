@@ -77,12 +77,10 @@ defmodule Handsup.GroupControllerTest do
     refute Repo.get(Handsup.Group, group.id)
   end
 
-  @tag login_as: "org", skip: true
-  test "fails to destroy group and renders", %{conn: conn, user: user} do
-    group = insert_group(user, name_eng: "group", name: "group1")
-    conn = delete(conn, group_path(conn, :delete, group.id))
+  @tag login_as: "org"
+  test "fails to destroy group and redirects", %{conn: conn, user: user} do
+    conn = delete(conn, group_path(conn, :delete, "42"))
     assert redirected_to(conn) == group_path(conn, :index)
-    assert Repo.get(Handsup.Group, group.id)
   end
 
   test "requires user authentication on 'new' action", %{conn: conn} do

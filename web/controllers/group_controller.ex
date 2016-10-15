@@ -66,21 +66,26 @@ defmodule Handsup.GroupController do
 
   def delete(conn, %{"id" => id}) do
     user = conn.assigns.current_user
-    group = Repo.get!(user_own_groups(user), id)
+    group = Repo.get(user_own_groups(user), id)
 
-    case Repo.delete(group) do
+    case group && Repo.delete(group) do
       {:ok, _group} ->
-        conn
-        |> put_flash(:info, "Group destroyed successfully.")
-        |> redirect(to: group_path(conn, :index))
+        redirect_to_index(conn, "Group destroyed successfully.")
       {:error, changeset} ->
-        conn
-        |> put_flash(:info, "Group isn't destroyed successfully.")
-        |> redirect(to: group_path(conn, :index))
+        redirect_to_index(conn, "Group isn't destroyed successfully.")
+      _ ->
+        redirect_to_index(conn, "You don't own this group.")
     end
   end
 
   defp user_own_groups(user) do
     assoc(user, :own_groups)
+  end
+
+  defp redirect_to_index(conn, msg) do
+    conn
+    |> put_flash(:info, msg)
+    |> redirect(to: group_path(conn, :index))
+    |> halt
   end
 end
