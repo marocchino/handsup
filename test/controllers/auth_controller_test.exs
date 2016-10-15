@@ -2,7 +2,8 @@ defmodule Handsup.AuthControllerTest do
   use Handsup.ConnCase
 
   setup %{conn: conn} = config do
-    if name = config[:login_as] do user = insert_user(nickname: name)
+    if name = config[:login_as] do
+      user = insert_user(nickname: name)
       conn = assign(build_conn, :current_user, user)
       {:ok, conn: conn, user: user}
     else
