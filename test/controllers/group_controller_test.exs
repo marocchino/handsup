@@ -24,6 +24,17 @@ defmodule Handsup.GroupControllerTest do
            "#{group.name} is not contained"
   end
 
+  test "show group", %{conn: conn} do
+    user = insert_user
+    group = insert_group(user, name_eng: "group", name: "group1")
+
+    conn = get conn, group_path(conn, :show, group.id)
+
+    assert html_response(conn, 200) =~ ~r/Show group/
+    assert String.contains?(conn.resp_body, group.name),
+           "#{group.name} is not contained"
+  end
+
   @tag login_as: "org"
   test "shows new form", %{conn: conn} do
     conn = get conn, group_path(conn, :new)

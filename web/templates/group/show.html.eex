@@ -1,0 +1,7 @@
+<h2>Show group</h2>
+
+<p>Name: <%= @group.name %></p>
+<p>Name Eng: <%= @group.name_eng %></p>
+
+<%= link "Back", to: group_path(@conn, :index) %>
+

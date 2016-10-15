@@ -11,6 +11,12 @@ defmodule Handsup.GroupController do
     render conn, "index.html", groups: groups
   end
 
+  def show(conn, %{"id" => id}) do
+    group = Repo.get!(Group, id)
+    changeset = Group.changeset(group)
+    render conn, "show.html", group: group
+  end
+
   def new(conn, _params) do
     changeset = Group.changeset(%Group{})
     render conn, "new.html", changeset: changeset
