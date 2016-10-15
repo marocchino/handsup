@@ -7,6 +7,7 @@
       <td><%= group.name_eng %></td>
       <td><%= link("show", to: group_path(@conn, :show, group)) %></td>
       <td><%= link("edit", to: group_path(@conn, :edit, group)) %></td>
+      <td><%= link("delete", to: group_path(@conn, :delete, group), method: :delete) %></td>
     </tr>
   <% end %>
 </table>

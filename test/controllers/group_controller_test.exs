@@ -69,6 +69,22 @@ defmodule Handsup.GroupControllerTest do
     assert html_response(conn, 200)
   end
 
+  @tag login_as: "org"
+  test "destroys group and redirects", %{conn: conn, user: user} do
+    group = insert_group(user, name_eng: "group", name: "group1")
+    conn = delete(conn, group_path(conn, :delete, group.id))
+    assert redirected_to(conn) == group_path(conn, :index)
+    refute Repo.get(Handsup.Group, group.id)
+  end
+
+  @tag login_as: "org", skip: true
+  test "fails to destroy group and renders", %{conn: conn, user: user} do
+    group = insert_group(user, name_eng: "group", name: "group1")
+    conn = delete(conn, group_path(conn, :delete, group.id))
+    assert redirected_to(conn) == group_path(conn, :index)
+    assert Repo.get(Handsup.Group, group.id)
+  end
+
   test "requires user authentication on 'new' action", %{conn: conn} do
     conn = get(conn, group_path(conn, :new))
     assert redirected_to(conn) == page_path(conn, :index)
@@ -89,6 +105,12 @@ defmodule Handsup.GroupControllerTest do
 
   test "requires user authentication on 'update' action", %{conn: conn} do
     conn = put(conn, group_path(conn, :update, "42"), %{})
+    assert redirected_to(conn) == page_path(conn, :index)
+    assert conn.halted
+  end
+
+  test "requires user authentication on 'delete' action", %{conn: conn} do
+    conn = delete(conn, group_path(conn, :delete, "42"), %{})
     assert redirected_to(conn) == page_path(conn, :index)
     assert conn.halted
   end

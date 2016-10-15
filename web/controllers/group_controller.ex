@@ -4,7 +4,8 @@ defmodule Handsup.GroupController do
   alias Handsup.Group
   import Handsup.Session, only: [authenticate_user: 2]
 
-  plug :authenticate_user when action in [:new, :create, :edit, :update]
+  plug :authenticate_user when action in [:new, :edit,
+                                          :create, :update, :delete]
 
   def index(conn, _params) do
     groups = Repo.all(Group)
@@ -60,6 +61,22 @@ defmodule Handsup.GroupController do
         |> redirect(to: group_path(conn, :index))
       {:error, changeset} ->
         render(conn, "edit.html", group: group, changeset: changeset)
+    end
+  end
+
+  def delete(conn, %{"id" => id}) do
+    user = conn.assigns.current_user
+    group = Repo.get!(user_own_groups(user), id)
+
+    case Repo.delete(group) do
+      {:ok, _group} ->
+        conn
+        |> put_flash(:info, "Group destroyed successfully.")
+        |> redirect(to: group_path(conn, :index))
+      {:error, changeset} ->
+        conn
+        |> put_flash(:info, "Group isn't destroyed successfully.")
+        |> redirect(to: group_path(conn, :index))
     end
   end
 
