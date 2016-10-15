@@ -19,7 +19,7 @@ defmodule Handsup.Router do
 
     get "/", PageController, :index
     resources "/groups", GroupController,
-              only: [:index, :new, :create, :edit, :update]
+              only: [:index, :show, :new, :create, :edit, :update]
   end
 
   scope "/auth", Handsup do
