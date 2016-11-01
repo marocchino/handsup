@@ -2,10 +2,12 @@ defmodule Handsup.GroupTest do
   use Handsup.ModelCase
 
   alias Handsup.Group
+  alias Ffaker.En.Company
+  alias Ffaker.En.Internet
 
-  @valid_attrs %{name: "some content", name_eng: "group-eng"}
+  @valid_attrs %{name: Company.name, name_eng: Internet.slug(nil, "-") }
   @invalid_attrs %{}
-  @invalid_group_eng %{name: "group", name_eng: "group eng"}
+  @invalid_group_eng %{name: Company.name, name_eng: "group eng"}
 
   test "changeset with valid attributes" do
     changeset = Group.changeset(%Group{}, @valid_attrs)

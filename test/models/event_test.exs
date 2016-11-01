@@ -4,6 +4,9 @@ defmodule Handsup.EventTest do
   alias Handsup.User
   alias Handsup.Group
   alias Handsup.Event
+  alias Ffaker.En.Company
+  alias Ffaker.En.Internet
+  alias Ffaker.En.Venue
 
   @invalid_attrs %{}
 
@@ -12,9 +15,10 @@ defmodule Handsup.EventTest do
                   |> Repo.insert
     {:ok, group} = user
                    |> build_assoc(:own_groups)
-                   |> Group.changeset(%{name: "aaaa", name_eng: "aaaa"})
+                   |> Group.changeset(%{name: Company.name,
+                                        name_eng: Internet.slug(nil, "-") })
                    |> Repo.insert
-    attrs = %{ name: "some content", group_id: group.id}
+    attrs = %{ name: Venue.name, group_id: group.id}
     changeset = Event.changeset(%Event{}, user, attrs)
     assert changeset.valid?
   end
