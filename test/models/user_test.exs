@@ -3,9 +3,10 @@ defmodule Handsup.UserTest do
 
   alias Handsup.User
   alias Handsup.Group
+  alias Ffaker.En.Internet
 
-  @valid_attrs %{nickname: "some content",
-                 provider: "some content",
+  @valid_attrs %{nickname: Internet.user_name,
+                 provider: "google",
                  uid: "some content"}
   @invalid_attrs %{}
 

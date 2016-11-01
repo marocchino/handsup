@@ -51,6 +51,7 @@ defmodule Handsup.Mixfile do
      {:ueberauth_google, github: "ueberauth/ueberauth_google"},
      {:excoveralls, "~> 0.5.6", only: :test},
      {:credo, "~> 0.4", only: [:dev, :test]},
+     {:ffaker, "~> 0.2.1", only: [:test]},
      {:cowboy, "~> 1.0"}]
   end
 
