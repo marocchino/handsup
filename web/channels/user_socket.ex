@@ -1,5 +1,6 @@
 defmodule Handsup.UserSocket do
   use Phoenix.Socket
+  alias Phoenix.Token
   @max_age 7 * 24 * 60 * 60
 
   ## Channels
@@ -21,7 +22,7 @@ defmodule Handsup.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(%{"token" => token}, socket) do
-    case Phoenix.Token.verify(socket, "user socket", token, max_age: @max_age) do
+    case Token.verify(socket, "user socket", token, max_age: @max_age) do
       {:ok, user_id} ->
         {:ok, assign(socket, :user_id, user_id)}
       {:error, _reason} ->

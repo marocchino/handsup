@@ -1,4 +1,7 @@
 defmodule Handsup.EventChannel do
+  @moduledoc """
+  EventChannel
+  """
   use Handsup.Web, :channel
 
   def join("event:" <> event_id, _params, socket) do
