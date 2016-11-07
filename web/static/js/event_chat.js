@@ -12,7 +12,7 @@ class EventChat {
       if (msgInput.value === "") { return }
       const payload = { message: msgInput.value }
       channel.push("new_chat", payload)
-             .receive("error", e => console.log(e))
+             .receive("error", console.log)
       msgInput.value = ""
     })
 

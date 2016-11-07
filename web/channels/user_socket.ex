@@ -21,15 +21,18 @@ defmodule Handsup.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(%{"token" => token}, socket) do
-    case Token.verify(socket, "user socket", token, max_age: @max_age) do
-      {:ok, user_id} ->
-        {:ok, assign(socket, :user_id, user_id)}
-      {:error, _reason} ->
-        :error
+  def connect(params, socket) do
+    with(
+      %{"token" => token} <- params,
+      {:ok, user_id} <- Phoenix.Token.verify(socket, "user socket", token,
+                                             max_age: @max_age),
+      result <- assign(socket, :user_id, user_id)
+    ) do
+      {:ok, result}
+    else
+      _ -> :error
     end
   end
-  def connect(_params, _socket), do: :error
 
   # Socket id's are topics that allow you to identify all sockets for a given
   # user:
