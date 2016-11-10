@@ -26,6 +26,7 @@ defmodule Handsup.AuthController do
         |> put_flash(:info, "Successfully authenticated.")
         |> put_session(:user_id, user.id)
         |> redirect(to: "/")
+
       {:error, reason} ->
         conn
         |> put_flash(:error, reason)

@@ -1,0 +1,4 @@
+<h2>TEST Chat</h2>
+<div id="chat"></div>
+<input type="text" id="message" placeholder="type something"/>
+<input type="submit" id="submit"/>
