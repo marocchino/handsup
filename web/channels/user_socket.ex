@@ -24,8 +24,8 @@ defmodule Handsup.UserSocket do
   def connect(params, socket) do
     with(
       %{"token" => token} <- params,
-      {:ok, user_id} <- Phoenix.Token.verify(socket, "user socket", token,
-                                             max_age: @max_age),
+      {:ok, user_id} <- Token.verify(socket, "user socket", token,
+                                     max_age: @max_age),
       result <- assign(socket, :user_id, user_id)
     ) do
       {:ok, result}
