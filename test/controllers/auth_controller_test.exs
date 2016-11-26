@@ -26,7 +26,7 @@ defmodule Handsup.AuthControllerTest do
   test "fail to grant user" do
     conn =
       build_conn()
-      |> assign(:ueberauth_auth, %{uid: "undefined", provider: "some_pro"})
+      |> assign(:ueberauth_auth, %{uid: "undefined", provider: :gooogle})
       |> get_callback
 
     assert html_response(conn, 302)

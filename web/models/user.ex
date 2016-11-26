@@ -56,5 +56,8 @@ defmodule Handsup.User do
     |> changeset(changes)
     |> Repo.insert_or_update
   end
-  def find_or_create(_), do: {:error, "Unknown Provider"}
+
+  def find_or_create(%{provider: provider}) do
+    {:error, "Unknown Provider: #{provider}"}
+  end
 end
