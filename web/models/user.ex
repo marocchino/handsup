@@ -47,14 +47,17 @@ defmodule Handsup.User do
   Find or Create user with passed oauth information.
   """
   @spec find_or_create(map) :: map
-  def find_or_create(auth) do
+  def find_or_create(%{uid: uid, provider: :google}) do
     changes =
-      %{uid: auth.uid, provider: auth.provider}
-      |> Map.update(:provider, "google", &to_string/1)
+      %{uid: uid, provider: "google"}
     query = where(__MODULE__, uid: ^changes.uid, provider: ^changes.provider)
     user = Repo.one(query) || %__MODULE__{}
     user
     |> changeset(changes)
     |> Repo.insert_or_update
+  end
+
+  def find_or_create(%{provider: provider}) do
+    {:error, "Unknown Provider: #{provider}"}
   end
 end
