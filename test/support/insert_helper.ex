@@ -1,12 +1,10 @@
 defmodule Handsup.InsertHelper do
-  alias Handsup.Repo
-  alias Handsup.User
-  alias Handsup.Group
+  alias Handsup.{Repo, User, Group, Event}
 
   def insert_user(attrs \\ []) do
     changes = Map.merge(%{
-      uid: "some_unique_id",
-      nickname: "name",
+      uid: Ffaker.En.Lorem.characters(32),
+      nickname: Ffaker.En.Name.name,
       provider: "google"
     }, Map.new(attrs))
 
@@ -14,7 +12,7 @@ defmodule Handsup.InsertHelper do
     |> User.changeset(changes)
     |> Repo.insert!
   end
-  
+
   def insert_group(user, attrs \\ []) do
     changes = Map.merge(%{
       name: "name",
@@ -23,6 +21,17 @@ defmodule Handsup.InsertHelper do
 
     %Group{organizer_id: user.id}
     |> Group.changeset(changes)
+    |> Repo.insert!
+  end
+
+  def insert_event(user, group, attrs \\ []) do
+    changes = Map.merge(%{
+      group_id: group.id,
+      name: "name"
+    }, Map.new(attrs))
+
+    %Event{}
+    |> Event.changeset(user, changes)
     |> Repo.insert!
   end
 end

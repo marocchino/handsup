@@ -22,14 +22,12 @@ defmodule Handsup.UserTest do
 
   test "owned? without group_id" do
     user = %User{id: 1}
-    event = %{id: 1}
-    refute User.owned?(user, event)
+    refute User.owned?(user, 1)
   end
 
   test "owned? with group_id that user not owned" do
     user = %User{id: 1}
-    event = %{id: 1, group_id: 1}
-    refute User.owned?(user, event)
+    refute User.owned?(user, 1)
   end
 
   test "owned? with group_id that user owned" do
@@ -39,8 +37,7 @@ defmodule Handsup.UserTest do
                    |> build_assoc(:own_groups)
                    |> Group.changeset(%{name: "aaaa", name_eng: "aaaa"})
                    |> Repo.insert
-    event = %{id: 1, group_id: group.id}
-    assert User.owned?(user, event)
+    assert User.owned?(user, group.id)
   end
 
   test "find_or_create return {:ok, user} with exist user" do

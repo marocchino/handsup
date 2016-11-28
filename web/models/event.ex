@@ -22,14 +22,16 @@ defmodule Handsup.Event do
     struct
     |> cast(params, [:name, :group_id])
     |> validate_required([:name, :group_id])
-    |> validate_owned(user)
+    |> validate_owned(params, user)
   end
 
-  @spec validate_owned(map, map) :: map
-  defp validate_owned(changeset, user) do
-    case User.owned?(user, changeset.changes) do
-      true ->
+  @spec validate_owned(map, map, map) :: map
+  defp validate_owned(changeset, params, user) do
+    with group_id = Map.get(params, :group_id) || Map.get(params, "group_id"),
+         true <- group_id != nil,
+         true <- User.owned?(user, group_id) do
         changeset
+    else
       _ ->
         add_error(changeset, :group_id, "You do not own this group")
     end
