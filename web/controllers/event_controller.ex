@@ -2,6 +2,7 @@ defmodule Handsup.EventController do
   use Handsup.Web, :controller
 
   alias Handsup.Event
+  alias Handsup.Group
   import Handsup.Session, only: [authenticate_user: 2]
 
   plug :authenticate_user when action in [:new, :create, :edit, :update,
@@ -12,16 +13,18 @@ defmodule Handsup.EventController do
     render(conn, "index.html", events: events)
   end
 
-  def new(conn, %{"group_id" => group_id}) do
+  def new(conn, %{"group_name_eng" => group_name_eng}) do
     changeset = Event.changeset(%Event{}, conn.assigns.current_user)
-    render(conn, "new.html", changeset: changeset, group_id: group_id)
+    render(conn, "new.html",
+           changeset: changeset, group_name_eng: group_name_eng)
   end
 
-  def create(conn, %{"group_id" => group_id, "event" => event_params}) do
-    gid = String.to_integer(group_id)
+  def create(conn, %{"group_name_eng" => group_name_eng,
+                     "event" => event_params}) do
     current_user = conn.assigns.current_user
+    group = Repo.get_by!(Group, name_eng: group_name_eng)
     changeset =
-      Event.changeset(%Event{group_id: gid}, current_user, event_params)
+      Event.changeset(%Event{group_id: group.id}, current_user, event_params)
 
     case Repo.insert(changeset) do
       {:ok, _event} ->
@@ -29,7 +32,8 @@ defmodule Handsup.EventController do
         |> put_flash(:info, "Event created successfully.")
         |> redirect(to: event_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset, group_id: gid)
+        render(conn, "new.html",
+               changeset: changeset, group_name_eng: group_name_eng)
     end
   end
 

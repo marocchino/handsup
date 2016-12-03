@@ -21,7 +21,7 @@ defmodule Handsup.Router do
     resources "/groups", GroupController, param: "name_eng" do
       resources "/events", EventController, only: [:new, :create]
     end
-    resources "/events", EventController
+    resources "/events", EventController, except: [:new, :create]
   end
 
   scope "/auth", Handsup do
