@@ -3,10 +3,11 @@ class EventChat {
     socket.connect()
     this.socket = socket
     const el = document.getElementById(element)
+    const eventId = el.getAttribute("data-event-id")
     const msgInput = document.getElementById("message")
     const submitButton = document.getElementById("submit")
 
-    const channel = socket.channel("event:1", {})
+    const channel = socket.channel(`event:${eventId}`, {})
 
     submitButton.addEventListener("click", e => {
       if (msgInput.value === "") { return }
