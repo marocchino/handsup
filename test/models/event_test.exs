@@ -18,8 +18,8 @@ defmodule Handsup.EventTest do
                    |> Group.changeset(%{name: Company.name,
                                         name_eng: Internet.slug(nil, "-") })
                    |> Repo.insert
-    attrs = %{ name: Venue.name, group_id: group.id}
-    changeset = Event.changeset(%Event{}, user, attrs)
+    attrs = %{name: Venue.name}
+    changeset = Event.changeset(%Event{group_id: group.id}, user, attrs)
     assert changeset.valid?
   end
 
