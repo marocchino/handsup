@@ -30,7 +30,7 @@ defmodule Handsup.GroupControllerTest do
     user = insert_user
     group = insert_group(user, name_eng: "group", name: "group1")
 
-    conn = get conn, group_path(conn, :show, group.id)
+    conn = get conn, group_path(conn, :show, group.name_eng)
 
     assert html_response(conn, 200) =~ ~r/Show group/
     assert String.contains?(conn.resp_body, group.name),
@@ -53,28 +53,28 @@ defmodule Handsup.GroupControllerTest do
   @tag login_as: "org"
   test "shows edit form", %{conn: conn, user: user} do
     group = insert_group(user, name_eng: "group", name: "group1")
-    conn = get conn, group_path(conn, :edit, group.id)
+    conn = get conn, group_path(conn, :edit, group.name_eng)
     assert html_response(conn, 200)
   end
 
   @tag login_as: "org"
   test "updates group and redirects", %{conn: conn, user: user} do
     group = insert_group(user, name_eng: "group", name: "group1")
-    conn = put(conn, group_path(conn, :update, group.id), group: @valid_attr)
+    conn = put(conn, group_path(conn, :update, group.name_eng), group: @valid_attr)
     assert redirected_to(conn) == group_path(conn, :index)
   end
 
   @tag login_as: "org"
   test "fails to update group and renders", %{conn: conn, user: user} do
     group = insert_group(user, name_eng: "group", name: "group1")
-    conn = put(conn, group_path(conn, :update, group.id), group: @invalid_attr)
+    conn = put(conn, group_path(conn, :update, group.name_eng), group: @invalid_attr)
     assert html_response(conn, 200)
   end
 
   @tag login_as: "org"
   test "destroys group and redirects", %{conn: conn, user: user} do
     group = insert_group(user, name_eng: "group", name: "group1")
-    conn = delete(conn, group_path(conn, :delete, group.id))
+    conn = delete(conn, group_path(conn, :delete, group.name_eng))
     assert redirected_to(conn) == group_path(conn, :index)
     refute Repo.get(Group, group.id)
   end

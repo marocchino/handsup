@@ -27,3 +27,10 @@ defmodule Handsup.Group do
     |> unique_constraint(:name_eng)
   end
 end
+
+# TODO: Move it somewhere
+defimpl Phoenix.Param, for: Handsup.Group do
+  def to_param(%{name_eng: name_eng}) do
+    name_eng
+  end
+end
