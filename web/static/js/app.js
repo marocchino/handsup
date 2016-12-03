@@ -10,4 +10,6 @@ const socket = new Socket("/socket", {
 })
 
 // Now that you are connected, you can join channels with a topic:
-const evt = new EventChat(socket, "chat")
+if(document.getElementById("chat")) {
+  const evt = new EventChat(socket, "chat")
+}

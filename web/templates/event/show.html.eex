@@ -14,5 +14,10 @@
 
 </ul>
 
+<h3>Chat</h3>
+<div id="chat" data-event-id="<%= @event.id %>"></div>
+<input type="text" id="message" placeholder="type something"/>
+<input type="submit" id="submit"/>
+
 <%= link "Edit", to: event_path(@conn, :edit, @event) %>
 <%= link "Back", to: event_path(@conn, :index) %>
