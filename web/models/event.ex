@@ -22,12 +22,12 @@ defmodule Handsup.Event do
     struct
     |> cast(params, [:name, :group_id])
     |> validate_required([:name, :group_id])
-    |> validate_owned(params, user)
+    |> validate_owned(struct, user)
   end
 
   @spec validate_owned(map, map, map) :: map
-  defp validate_owned(changeset, params, user) do
-    with group_id = Map.get(params, :group_id) || Map.get(params, "group_id"),
+  defp validate_owned(changeset, struct, user) do
+    with group_id = Map.get(struct, :group_id),
          true <- group_id != nil,
          true <- User.owned?(user, group_id) do
         changeset

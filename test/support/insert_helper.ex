@@ -26,11 +26,10 @@ defmodule Handsup.InsertHelper do
 
   def insert_event(user, group, attrs \\ []) do
     changes = Map.merge(%{
-      group_id: group.id,
       name: "name"
     }, Map.new(attrs))
 
-    %Event{}
+    %Event{group_id: group.id}
     |> Event.changeset(user, changes)
     |> Repo.insert!
   end

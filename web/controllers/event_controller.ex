@@ -12,14 +12,16 @@ defmodule Handsup.EventController do
     render(conn, "index.html", events: events)
   end
 
-  def new(conn, _params) do
+  def new(conn, %{"group_id" => group_id}) do
     changeset = Event.changeset(%Event{}, conn.assigns.current_user)
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, group_id: group_id)
   end
 
-  def create(conn, %{"event" => event_params}) do
+  def create(conn, %{"group_id" => group_id_str, "event" => event_params}) do
+    gid = String.to_integer(group_id_str)
+    current_user = conn.assigns.current_user
     changeset =
-      Event.changeset(%Event{}, conn.assigns.current_user, event_params)
+      Event.changeset(%Event{group_id: gid}, current_user, event_params)
 
     case Repo.insert(changeset) do
       {:ok, _event} ->
@@ -27,7 +29,7 @@ defmodule Handsup.EventController do
         |> put_flash(:info, "Event created successfully.")
         |> redirect(to: event_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, group_id: gid)
     end
   end
 
