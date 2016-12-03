@@ -4,7 +4,8 @@ defmodule Handsup.EventController do
   alias Handsup.Event
   import Handsup.Session, only: [authenticate_user: 2]
 
-  plug :authenticate_user when action in [:new, :create, :edit, :update]
+  plug :authenticate_user when action in [:new, :create, :edit, :update,
+                                          :delete]
 
   def index(conn, _params) do
     events = Repo.all(Event)
@@ -43,7 +44,7 @@ defmodule Handsup.EventController do
 
   def update(conn, %{"id" => id, "event" => event_params}) do
     event = Repo.get!(Event, id)
-    changeset = Event.changeset(event, event_params)
+    changeset = Event.changeset(event, conn.assigns.current_user, event_params)
 
     case Repo.update(changeset) do
       {:ok, event} ->

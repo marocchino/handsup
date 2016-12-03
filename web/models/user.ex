@@ -31,15 +31,12 @@ defmodule Handsup.User do
   @doc """
   Return true if event is from a group owned by user
   """
-  @spec owned?(map, map) :: boolean
-  def owned?(user, event) do
-    with(
-      {:ok, group_id} <- Map.fetch(event, :group_id),
-      true <- Repo.get(assoc(user, :own_groups), group_id) && true
-    ) do
+  @spec owned?(map, number) :: boolean
+  def owned?(user, group_id) do
+    if Repo.get(assoc(user, :own_groups), group_id) do
       true
     else
-      _ -> false
+      false
     end
   end
 
