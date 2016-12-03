@@ -3,6 +3,6 @@
 <p>Name: <%= @group.name %></p>
 <p>Name Eng: <%= @group.name_eng %></p>
 
-<%= link "New event", to: group_event_path(@conn, :new, @group.id) %>
+<%= link "New event", to: group_event_path(@conn, :new, @group.name_eng) %>
 <%= link "Back", to: group_path(@conn, :index) %>
 

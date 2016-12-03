@@ -12,8 +12,8 @@ defmodule Handsup.GroupController do
     render conn, "index.html", groups: groups
   end
 
-  def show(conn, %{"id" => id}) do
-    group = Repo.get!(Group, id)
+  def show(conn, %{"name_eng" => name_eng}) do
+    group = Repo.get_by!(Group, name_eng: name_eng)
     render conn, "show.html", group: group
   end
 
@@ -39,18 +39,18 @@ defmodule Handsup.GroupController do
     end
   end
 
-  def edit(conn, %{"id" => id}) do
+  def edit(conn, %{"name_eng" => name_eng}) do
     group =
       conn.assigns.current_user
       |> user_own_groups
-      |> Repo.get!(id)
+      |> Repo.get_by!(name_eng: name_eng)
     changeset = Group.changeset(group)
     render conn, "edit.html", changeset: changeset, group: group
   end
 
-  def update(conn, %{"id" => id, "group" => group_params}) do
+  def update(conn, %{"name_eng" => name_eng, "group" => group_params}) do
     user = conn.assigns.current_user
-    group = Repo.get!(user_own_groups(user), id)
+    group = Repo.get_by!(user_own_groups(user), name_eng: name_eng)
     changeset = Group.changeset(group, group_params)
 
     case Repo.update(changeset) do
@@ -63,9 +63,9 @@ defmodule Handsup.GroupController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"name_eng" => name_eng}) do
     user = conn.assigns.current_user
-    group = Repo.get(user_own_groups(user), id)
+    group = Repo.get_by(user_own_groups(user), name_eng: name_eng)
 
     case group && Repo.delete(group) do
       {:ok, _group} ->

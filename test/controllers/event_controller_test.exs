@@ -23,7 +23,7 @@ defmodule Handsup.EventControllerTest do
   @tag login_as: Ffaker.En.Name.name
   test "renders form for new resources", %{conn: conn, user: user} do
     group = insert_group(user)
-    conn = get conn, group_event_path(conn, :new, group.id)
+    conn = get conn, group_event_path(conn, :new, group.name_eng)
     assert html_response(conn, 200) =~ "New event"
   end
 
@@ -32,7 +32,7 @@ defmodule Handsup.EventControllerTest do
        %{conn: conn, user: user} do
     group = insert_group(user)
     valid_attrs = Map.merge(@valid_attrs, %{group_id: group.id})
-    conn = post conn, group_event_path(conn, :create, group.id), event: valid_attrs
+    conn = post conn, group_event_path(conn, :create, group.name_eng), event: valid_attrs
     assert redirected_to(conn) == event_path(conn, :index)
     assert Repo.get_by(Event, @valid_attrs)
   end
@@ -43,14 +43,14 @@ defmodule Handsup.EventControllerTest do
     user = insert_user
     group = insert_group(user)
     valid_attrs = Map.merge(@valid_attrs, %{group_id: group.id})
-    conn = post conn, group_event_path(conn, :create, group.id), event: valid_attrs
+    conn = post conn, group_event_path(conn, :create, group.name_eng), event: valid_attrs
     assert html_response(conn, 200) =~ "New event"
   end
 
   @tag login_as: Ffaker.En.Name.name
   test "does not create resource and renders errors when data is invalid", %{conn: conn, user: user} do
     group = insert_group(user)
-    conn = post conn, group_event_path(conn, :create, group.id), event: @invalid_attrs
+    conn = post conn, group_event_path(conn, :create, group.name_eng), event: @invalid_attrs
     assert html_response(conn, 200) =~ "New event"
   end
 
